@@ -39,7 +39,7 @@ class SubscriptionAPI():
         raise SignuptoAPIException(result)
 
 
-    def list_check_subscription(self, **kwargs):
+    def check_subscription(self, **kwargs):
         """ Check for a subscription based on one of email or username.
         If you do not specify an (optional) pid, or set pid to 0, then
         all of your lists will be searched for the passed subscriber details.
@@ -47,7 +47,7 @@ class SubscriptionAPI():
         return self._api_call_boolean(script='capture', mode='check', **kwargs)
 
 
-    def list_subscribe(self, pid, **kwargs):
+    def add_subscription(self, pid, **kwargs):
         """ Add someone to a list either by email or by mobile.
         Optional parameters are title, first_name, surname, day_birth,
         month_birth, year_birth, house_number, street_name, town, county,
@@ -57,7 +57,7 @@ class SubscriptionAPI():
         return self._api_call_boolean(script='capture', mode='add', pid=pid, **kwargs)
 
 
-    def list_unsubscribe(self, **kwargs):
+    def remove_subscription(self, **kwargs):
         """ Add someone to a list either by email or by mobile.
         If you do not specify an (optional) pid, or set pid to 0, then
         the passed subscriber details will be removed from all of your lists.
@@ -117,10 +117,46 @@ class SubscriptionAPI():
             raise SignuptoAPIException(result)
 
 
-    def subscriber_search(self, **kwargs):
+    def search(self, **kwargs):
         """
         You may search on:  search_email, search_first_name, search_surname, search_mobile
         If you do not specify an (optional) pid, or set pid to 0, then
         all of your lists will be searched for the passed subscriber details.
         """
         return self._api_call(script='review', **kwargs)
+
+
+    def import_ftp(self, **kwargs):
+        """ Data can be imported from username/password protected FTP sites. Clients
+        should be aware that this functionality is provided for maximum compatibility;
+        we recommend using the SSH import mechanism.
+        Returns an import_id.
+        """
+        result = self._api_call(script='import', **kwargs)
+        try:
+            return int(result)
+        except ValueError:
+            raise SignuptoAPIException(result)
+
+
+    def import_scp(self, **kwargs):
+        """ To use this functionality it is imperative that the csv file is
+        hosted on a server that can be accessed by SCP. Clients who wish to
+        use this functionality must contact support@sign-up.to in order to
+        obtain Signup.to's SSH public key, and provide a source server host name.
+        Returns an import_id.
+        """
+        result = self._api_call(script='import_scp', **kwargs)
+        try:
+            return int(result)
+        except ValueError:
+            raise SignuptoAPIException(result)
+
+
+    def import_status(self, import_id):
+        result = self._api_call(script='import_complete', import_id=import_id)
+        if result == import_id:
+            return True
+        if result == '0':
+            return False
+        raise SignuptoAPIException(result)
