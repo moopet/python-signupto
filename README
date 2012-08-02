@@ -1,0 +1,10 @@
+This intends to be a wrapper for all Sign-up.to's APIs, but for now it's just
+the Subscription Manager API, and it doesn't include the CSV upload methods
+at that.
+
+
+Get started:
+
+    import signupto.api
+    api = signupto.api.SubscriptionAPI(api_hash="YOUR_API_HASH_HERE", cid="YOUR_CID_HERE")
+    print api.get_lists()
