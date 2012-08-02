@@ -1,10 +1,12 @@
 This intends to be a wrapper for all Sign-up.to's APIs, but for now it's just
-the Subscription Manager API, and it doesn't include the CSV upload methods
-at that.
+the Subscription Manager API
 
+You need to add your server's IP address to the whitelist on signup.to's API settings page, and grab yourself the API keys.
+If you want to import CSVs of info through SCP you'll also need to contact them to get their public key, which for some
+reason isn't... public.
 
 Get started:
 
     import signupto.api
-    api = signupto.api.SubscriptionAPI(api_hash="YOUR_API_HASH_HERE", cid="YOUR_CID_HERE")
+    api = signupto.api.SubscriptionAPI(api_hash="YOUR_API_HASH", cid="YOUR_CID")
     print api.get_lists()

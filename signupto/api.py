@@ -153,7 +153,7 @@ class SubscriptionAPI():
             raise SignuptoAPIException(result)
 
 
-    def import_status(self, import_id):
+    def import_complete(self, import_id):
         result = self._api_call(script='import_complete', import_id=import_id)
         if result == import_id:
             return True
